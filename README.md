@@ -12,7 +12,9 @@ but the data scrolls away vertically.  What if the data can be better output to
 maximize the screen real estate?
 
 
-## Example Output
+## Example
+
+See [example.py] for an example code. Below is its output.
 
 ```
 ================================ Example Output ================================
@@ -45,14 +47,9 @@ Email: nobody@nowhere.com
 ```
 
 
-## Usage
+## API Reference
 
 TBD
-
-
-## Example
-
-See [example.py]
 
 
 ## License
