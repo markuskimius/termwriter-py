@@ -5,7 +5,7 @@ https://github.com/markuskimius/screen-py
 
 import os, sys
 
-__copyright__ = "Copyright 2019, Mark Kim"
+__copyright__ = "Copyright 2019 Mark Kim"
 __license__ = "Apache 2.0"
 
 
@@ -585,6 +585,7 @@ class FlexBox(WritableBox):
 
         # Commit
         self.__vbox = vbox
+        # super(FlexBox, self).close()
 
     def format(self, width=None, height=None):
         return self.__vbox.format(width, height)
@@ -661,6 +662,10 @@ class Screen(TitledBox):
     def write(self, *args, **kwargs):
         # Writing to the screen writes to the console area.
         self.__console.write(*args, **kwargs)
+
+    def writeln(self, *args, **kwargs):
+        # Writing to the screen writes to the console area.
+        self.__console.writeln(*args, **kwargs)
 
     def add(self, title, box):
         # All boxes added to the Screen get a title
