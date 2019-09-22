@@ -176,8 +176,8 @@ TOP_CENTER_FORMATTER = TopFormatter(CenterFormatter())
 # Widgets go in boxes.
 
 class Widget(object):
-    def width(self): pass
-    def height(self): pass
+    def width(self): return 0
+    def height(self): return 0
     def format(self, width=None, height=None): pass
 
 
@@ -210,9 +210,6 @@ class StringWidget(Widget):
 
         return len(lines)
 
-    def __str__(self):
-        return string
-
     def format(self, width=None, height=None):
         lines = self.__string.split('\n')
 
@@ -223,8 +220,6 @@ class StringWidget(Widget):
 
 
 class ControlWidget(Widget):
-    def width(self): return 0
-    def height(self): return 0
     def format(self, width=None, height=None): return []
 
 
@@ -252,9 +247,6 @@ class HorizontalRule(FillWidget):
         self.__rule_char = rule_char
         super(HorizontalRule, self).__init__(rule_char)
 
-    def width(self):
-        return 0
-
     def height(self):
         return len(self.__rule_char.split('\n'))
 
@@ -267,9 +259,6 @@ class VerticalRule(FillWidget):
     def width(self):
         return len(self.__rule_char)
 
-    def height(self):
-        return 0
-
 
 ##############################################################################
 # BOXES
@@ -277,42 +266,42 @@ class VerticalRule(FillWidget):
 # Boxes contain widgets or other boxes.
 
 class Box(Widget):
+    class BoxLockedException(Exception): pass
+
     def __init__(self):
         self.__widgets = []
-        self.__buffer = ''
+        self.__locked = False
 
-    def __call__(self, WidgetType, *args, **kwargs):
-        widget = WidgetType(*args, **kwargs)
+    def close(self):
+        self.__locked = True
+
+    def add(self, widget):
+        if self.__locked: raise BoxLockedException()
+
         self.__widgets.append(widget)
 
         return widget
 
-    def add(self, widget):
-        self.__widgets.append(widget)
-
-    def write(self, *args, **kwargs):
-        for string in args:
-            self.__buffer += string
-
-        self.__flush()
-
-    def writeln(self, *args, **kwargs):
-        for string in args:
-            self.write('%s\n' % string)
-
-        if len(args) == 0:
-            self.write('\n')
-
-    def __flush(self):
-        lines = self.__buffer.split('\n')
-
-        for li in lines[0:-1]:
-            self.add(StringWidget(li))
-
-        self.__buffer = lines[-1]
-
     def remove(self, widget):
+        if self.__locked: raise BoxLockedException()
+
         self.__widgets.remove(widget)
+
+    def __len__(self):
+        return len(self.__widgets)
+
+    def __iter__(self):
+        for widget in self.__widgets:
+            yield widget
+
+    def __getitem__(self, i):
+        return self.__widgets[i]
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        self.close()
 
     def softbreak(self):
         self.add(SoftBreak())
@@ -326,30 +315,43 @@ class Box(Widget):
     def vrule(self, rule_char='|'):
         self.add(VerticalRule(rule_char))
 
-    def width(self):
-        return 0
+    def draw(self, WidgetType, *args, **kwargs):
+        widget = WidgetType(*args, **kwargs)
+        self.__widgets.append(widget)
 
-    def height(self):
-        return 0
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, type, value, traceback):
-        pass
-
-    def __len__(self):
-        return len(self.__widgets)
-
-    def __iter__(self):
-        for widget in self.__widgets:
-            yield widget
-
-    def __getitem__(self, i):
-        return self.__widgets[i]
+        return widget
 
 
-class HorizontalBox(Box):
+class WritableBox(Box):
+    def __init__(self):
+        super(WritableBox, self).__init__()
+        self.__buffer = ''
+
+    def write(self, *args, **kwargs):
+        for string in args:
+            self.__buffer += str(string)
+
+        lines = self.__buffer.split('\n')
+
+        for li in lines[0:-1]:
+            self.add(StringWidget(li))
+
+        self.__buffer = lines[-1]
+
+    def writeln(self, *args, **kwargs):
+        for string in args:
+            self.write('%s\n' % string, **kwargs)
+
+        if len(args) == 0:
+            self.write('\n')
+
+    def close(self):
+        if len(self.__buffer): self.write('\n')
+
+        super(WritableBox, self).close()
+
+
+class HorizontalBox(WritableBox):
     def __init__(self, num_padding=1, formatter=TOP_LEFT_FORMATTER):
         super(HorizontalBox, self).__init__()
         self.__num_padding = num_padding
@@ -441,7 +443,7 @@ class HorizontalBox(Box):
         return adj_width
 
 
-class VerticalBox(Box):
+class VerticalBox(WritableBox):
     def __init__(self, num_padding=1, formatter=TOP_LEFT_FORMATTER):
         self.__num_padding = num_padding
         self.__formatter = formatter
@@ -523,10 +525,12 @@ class TabularBox(HorizontalBox):
             self.__columns[i].writeln(string, **kwargs)
 
     def hrule(self, *args, **kwargs):
-        cols = len(self.__columns)
+        for col in self.__columns:
+            col.hrule(*args, **kwargs)
 
-        for i in range(cols):
-            self.__columns[i].hrule(*args, **kwargs)
+    def close(self):
+        for col in self.__columns:
+            col.close()
 
 
 class TextBox(VerticalBox):
@@ -534,7 +538,7 @@ class TextBox(VerticalBox):
         super(TextBox, self).__init__(num_padding=0, formatter=formatter)
 
 
-class FlexBox(Box):
+class FlexBox(WritableBox):
     def __init__(self, max_width=ScreenUtil.termwidth(), formatter=TOP_LEFT_FORMATTER, num_hpadding=1, num_vpadding=1):
         self.__num_hpadding = num_hpadding
         self.__num_vpadding = num_vpadding
@@ -550,10 +554,7 @@ class FlexBox(Box):
     def height(self):
         return self.__vbox.height()
 
-    def __enter__(self):
-        return self
-
-    def __exit__(self, type, value, traceback):
+    def close(self):
         iterator = super(FlexBox, self).__iter__()
         maxwidth = self.__max_width
         vbox = VerticalBox(self.__num_vpadding, self.__formatter)
@@ -602,23 +603,32 @@ class TitledBox(VerticalBox):
         super(TitledBox, self).add(self.__title)
         super(TitledBox, self).add(self.__content)
 
-    def __call__(self, WidgetType, *args, **kwargs):
-        return self.__content(WidgetType, *args, **kwargs)
+    def close(self):
+        self.__content.close()
 
     def add(self, widget):
         self.__content.add(widget)
 
-    def write(self, *args, **kwargs):
-        self.__content.write(*args, **kwargs)
-
-    def writeln(self, *args, **kwargs):
-        self.__content.writeln(*args, **kwargs)
+        return widget
 
     def remove(self, widget):
         self.__content.remove(widget)
 
     def __len__(self):
         return len(self.__content)
+
+    def __iter__(self):
+        for widget in self.__content.__iter__():
+            yield widget
+
+    def __getitem__(self, i):
+        return self.__content[i]
+
+    def write(self, *args, **kwargs):
+        self.__content.write(*args, **kwargs)
+
+    def writeln(self, *args, **kwargs):
+        self.__content.writeln(*args, **kwargs)
 
     def softbreak(self):
         self.__content.softbreak()
@@ -632,20 +642,8 @@ class TitledBox(VerticalBox):
     def vrule(self, *args, **kwargs):
         self.__content.vrule(*args, **kwargs)
 
-    def __enter__(self):
-        self.__content.__enter__()
-
-        return self
-
-    def __exit__(self, type, value, traceback):
-        self.__content.__exit__(type, value, traceback)
-
-    def __iter__(self):
-        for widget in self.__content.__iter__():
-            yield widget
-
-    def __getitem__(self, i):
-        return self.__content[i]
+    def draw(self, WidgetType, *args, **kwargs):
+        return self.__content.draw(WidgetType, *args, **kwargs)
 
 
 ##############################################################################
@@ -664,11 +662,14 @@ class Screen(TitledBox):
         # Writing to the screen writes to the console area.
         self.__console.write(*args, **kwargs)
 
-    def writeln(self, *args, **kwargs):
-        # Writing to the screen writes to the console area.
-        self.__console.writeln(*args, **kwargs)
+    def add(self, title, box):
+        # All boxes added to the Screen get a title
+        box = TitledBox(title, box)      # Add a title
+        super(Screen, self).add(box)     # Add the box to myself
 
-    def __call__(self, BoxType, title, *args, **kwargs):
+        return box
+
+    def draw(self, title, BoxType, *args, **kwargs):
         # All boxes added to the Screen get a title
         box = BoxType(*args, **kwargs)   # Create the box
         box = TitledBox(title, box)      # Add a title
@@ -676,11 +677,8 @@ class Screen(TitledBox):
 
         return box
 
-    def __enter__(self):
-        return self
-
-    def __exit__(self, type, value, traceback):
-        super(Screen, self).__exit__(type, value, traceback)
+    def close(self):
+        super(Screen, self).close()
 
         # Write it out to fp (sys.stdout by default)
         for line in super(Screen, self).format():
