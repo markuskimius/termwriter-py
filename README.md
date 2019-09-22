@@ -1,15 +1,15 @@
 # screen-py
 
-A library to maximize the screen real estate utility with print().
+A library to maximize the use of the screen real estate with print().
 
 
 ## Motivation
 
 Dumping a ton of information to the screen using `print()` can cause the data
-you want to see on the screen to scroll up and away.  This can be particularly
-frustrating because today's monitors have a lot more horizontal screen space
-but the data scrolls away vertically.  What if the data can be better output to
-maximize the screen real estate?
+you want to see on the screen to scroll up, away from the visible terminal
+area.  This can be particularly frustrating because today's monitors have a lot
+more horizontal screen space but the data scrolls away vertically.  What if
+`print()` can better organize the output to maximize the screen real estate?
 
 
 ## Example
@@ -49,7 +49,7 @@ Email: nobody@nowhere.com
 
 ## API Reference
 
-TBD
+[TBD]
 
 
 ## License
