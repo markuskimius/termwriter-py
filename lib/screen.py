@@ -693,3 +693,6 @@ class Screen(TitledBox):
             self.__fp.write(str(line))
             self.__fp.write('\n')
 
+        # Add an empty row at the end
+        self.__fp.write('\n')
+
