@@ -476,7 +476,7 @@ class VerticalBox(WritableBox):
             height += widget.height()
 
             # Adjust for spacing after non-control widgets
-            if not isinstance(widget, ControlWidget):
+            if (i > 0) and not isinstance(widget, ControlWidget):
                 height += self.__num_padding
 
         return height
@@ -494,7 +494,7 @@ class VerticalBox(WritableBox):
                 lines.append(li)
 
             # Adjust for spacing after non-control widgets
-            if not isinstance(widget, ControlWidget):
+            if (i > 0) and not isinstance(widget, ControlWidget):
                 lines += padding
 
         return self.__formatter(lines, width, height)
