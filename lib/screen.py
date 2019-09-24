@@ -315,7 +315,10 @@ class Box(Widget):
     def vrule(self, rule_char='|'):
         self.add(VerticalRule(rule_char))
 
-    def draw(self, WidgetType, *args, **kwargs):
+    def draw(self, WidgetType=None, *args, **kwargs):
+        if WidgetType is None:
+            WidgetType = TextBox
+
         widget = WidgetType(*args, **kwargs)
         self.__widgets.append(widget)
 
@@ -643,7 +646,7 @@ class TitledBox(VerticalBox):
     def vrule(self, *args, **kwargs):
         self.__content.vrule(*args, **kwargs)
 
-    def draw(self, WidgetType, *args, **kwargs):
+    def draw(self, WidgetType=TextBox, *args, **kwargs):
         return self.__content.draw(WidgetType, *args, **kwargs)
 
 
@@ -674,7 +677,7 @@ class Screen(TitledBox):
 
         return box
 
-    def draw(self, title, BoxType, *args, **kwargs):
+    def draw(self, title, BoxType=TextBox, *args, **kwargs):
         # All boxes added to the Screen get a title
         box = BoxType(*args, **kwargs)   # Create the box
         box = TitledBox(title, box)      # Add a title
