@@ -47,9 +47,9 @@ Email: nobody@nowhere.com
 ```
 
 
-## API Reference
+## Documentation
 
-[TBD]
+See [documentation].
 
 
 ## License
@@ -59,4 +59,5 @@ Email: nobody@nowhere.com
 
 [example.py]: <https://github.com/markuskimius/screen-py/blob/master/test/example.py>
 [Apache 2.0]: <https://github.com/markuskimius/screen-py/blob/master/LICENSE>
+[documentation]: <https://github.com/markuskimius/screen-py/blob/master/doc/README.md>
 
