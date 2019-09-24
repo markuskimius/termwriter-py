@@ -473,11 +473,11 @@ class VerticalBox(WritableBox):
         height = 0
 
         for i, widget in enumerate(iterator):
-            height += widget.height()
-
-            # Adjust for spacing after non-control widgets
+            # Adjust for spacing before non-control widgets
             if (i > 0) and not isinstance(widget, ControlWidget):
                 height += self.__num_padding
+
+            height += widget.height()
 
         return height
 
@@ -490,12 +490,12 @@ class VerticalBox(WritableBox):
         padding = [' ' * width] * self.__num_padding
 
         for i, widget in enumerate(iterator):
-            for li in widget.format(width):
-                lines.append(li)
-
-            # Adjust for spacing after non-control widgets
+            # Adjust for spacing before non-control widgets
             if (i > 0) and not isinstance(widget, ControlWidget):
                 lines += padding
+
+            for li in widget.format(width):
+                lines.append(li)
 
         return self.__formatter(lines, width, height)
 
@@ -661,7 +661,6 @@ class Screen(TitledBox):
         super(Screen, self).__init__(title, FlexBox(), hrule=hrule)  # I am a FlexBox with a title!
         super(Screen, self).add(self.__console)                      # Add the console to the screen
         super(Screen, self).hardbreak()                              # Other boxes go below the console
-        super(Screen, self).hardbreak()                              # Add some spacing before other boxes
 
     def write(self, *args, **kwargs):
         # Writing to the screen writes to the console area.
