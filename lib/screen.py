@@ -661,6 +661,7 @@ class Screen(TitledBox):
         super(Screen, self).__init__(title, FlexBox(), hrule=hrule)  # I am a FlexBox with a title!
         super(Screen, self).add(self.__console)                      # Add the console to the screen
         super(Screen, self).hardbreak()                              # Other boxes go below the console
+        super(Screen, self).hardbreak()                              # Add some spacing before other boxes
 
     def write(self, *args, **kwargs):
         # Writing to the screen writes to the console area.
