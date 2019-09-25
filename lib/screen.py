@@ -222,13 +222,12 @@ class StringWidget(Widget):
 class ControlWidget(Widget):
     def format(self, width=None, height=None): return []
 
-
 class BreakWidget(ControlWidget): pass
 class SoftBreak(BreakWidget): pass
 class HardBreak(BreakWidget): pass
 
 
-class FillWidget(ControlWidget):
+class FillWidget(Widget):
     def __init__(self, fill_char='*'):
         formatter = LeftFormatter(padding_char=fill_char)
         formatter = TopFormatter(formatter, padding_char=fill_char)
@@ -511,13 +510,16 @@ class TabularBox(HorizontalBox):
         self.__columns = []
 
         for f in format:
-            if f == 'l':   textbox = TextBox(TOP_LEFT_FORMATTER)
-            elif f == 'r': textbox = TextBox(TOP_RIGHT_FORMATTER)
-            elif f == 'c': textbox = TextBox(TOP_CENTER_FORMATTER)
+            if   f == '|': box = VerticalRule()
+            elif f == 'l': box = TextBox(TOP_LEFT_FORMATTER)
+            elif f == 'r': box = TextBox(TOP_RIGHT_FORMATTER)
+            elif f == 'c': box = TextBox(TOP_CENTER_FORMATTER)
             else: raise TabularBox.InvalidAlignment('%s: Invalid alignment code' % f)
 
-            self.__columns.append(textbox)
-            super(TabularBox, self).add(textbox)
+            if isinstance(box, Box):
+                self.__columns.append(box)
+
+            super(TabularBox, self).add(box)
 
     def write(self, *args, **kwargs):
         for i, string in enumerate(args):
