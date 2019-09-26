@@ -12,23 +12,23 @@ __license__ = "Apache 2.0"
 ##############################################################################
 # UTILITIES
 
-class ScreenUtil(object):
+class Terminal(object):
     __cols = None
 
     @staticmethod
-    def termwidth():
-        if ScreenUtil.__cols is None:
+    def width():
+        if Terminal.__cols is None:
             # Memoize the terminal width
             try:
-                ScreenUtil.__cols = int(os.popen('tput cols', 'r').read())
+                Terminal.__cols = int(os.popen('tput cols', 'r').read())
             except ValueError:
-                ScreenUtil.__cols = 120
+                Terminal.__cols = 120
 
             # Some terminals line wrap if you try to write to the last column
             # so don't use that column
-            ScreenUtil.__cols -= 1
+            Terminal.__cols -= 1
 
-        return ScreenUtil.__cols
+        return Terminal.__cols
 
 
 class WidgetFormatter(object):
@@ -147,7 +147,7 @@ class ParagraphFormatter(WidgetFormatter):
         self.__parent_formatter = parent_formatter
 
     def __call__(self, lines, width=0, height=0):
-        width = min(width, ScreenUtil.termwidth()) if width else ScreenUtil.termwidth()
+        width = min(width, Terminal.width()) if width else Terminal.width()
         lines = self.__parent_formatter(lines, width, height)
         wrapped = []
 
@@ -544,7 +544,7 @@ class TextBox(VerticalBox):
 
 
 class FlexBox(WritableBox):
-    def __init__(self, max_width=ScreenUtil.termwidth(), formatter=TOP_LEFT_FORMATTER, num_hpadding=1, num_vpadding=1):
+    def __init__(self, max_width=Terminal.width(), formatter=TOP_LEFT_FORMATTER, num_hpadding=1, num_vpadding=1):
         self.__num_hpadding = num_hpadding
         self.__num_vpadding = num_vpadding
         self.__max_width = max_width
@@ -590,7 +590,7 @@ class FlexBox(WritableBox):
 
         # Commit
         self.__vbox = vbox
-        # super(FlexBox, self).close()
+        super(FlexBox, self).close()
 
     def format(self, width=None, height=None):
         return self.__vbox.format(width, height)
