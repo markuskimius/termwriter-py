@@ -170,4 +170,9 @@ A few things about the nested `box.draw()`:
 * `draw()` takes a variable number of arguments which is used to instantiate
   the box class.  In the above example, `draw()` passes `'ll'` to `TabularBox`
   to instantiate a tabular box with 2 columns both of which are left-aligned.
+  If you wanted, you could have instead instantiated the `TabularBox` with the
+  `'ll'` argument first then added it to `box` using `add()`.  For example:
+  ```python
+        with box.add(TabularBox('ll')) as table:
+  ```
 
