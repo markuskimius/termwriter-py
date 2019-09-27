@@ -170,5 +170,4 @@ A few things about the nested `box.draw()`:
 * `draw()` takes a variable number of arguments which is used to instantiate
   the box class.  In the above example, `draw()` passes `'ll'` to `TabularBox`
   to instantiate a tabular box with 2 columns both of which are left-aligned.
-  It also decorates the created tabular box with a title.
 
