@@ -121,7 +121,7 @@ with Screen('My Screen') as screen:
 
 ----- My First Box ------
 I can nest boxes.
-Below is a nested box:
+Below is a table:
 
 Name:  John Q. Public
 Tel:   +1 111 555 3333
@@ -150,12 +150,12 @@ with Screen('My Screen') as screen:
 ... which gives the following output:
 
 ```
-====================== My Screen ======================
-
--------------------- My First Box ---------------------
-I can nest boxes.             Name:  John Q. Public
-To the right is a nested box: Tel:   +1 111 555 3333
-                              Email: nobody@nowhere.com
+=================== My Screen ====================
+                                                  
+------------------ My First Box ------------------
+I can nest boxes.        Name:  John Q. Public    
+To the right is a table: Tel:   +1 111 555 3333   
+                         Email: nobody@nowhere.com
 ```
 
 A few things about the nested `box.draw()`:
