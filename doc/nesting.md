@@ -1,8 +1,8 @@
 # screen-py Documentation
 
-[Table of Contents]
+Back to the [Table of Contents]
 
-## Nesting
+## 2. Nesting
 
 It is possible to nest boxes to create more elaborate layouts.  Boxes may be
 stacked vertically or text may be arranged in a table, for example.
@@ -106,6 +106,11 @@ A few things about the nested `box.draw()`:
   ```python
         with box.add(TabularBox('ll')) as table:
   ```
+
+
+---
+
+Back to the [Table of Contents]
 
 
 [Table of Contents]: <https://github.com/markuskimius/screen-py/blob/master/doc/README.md>

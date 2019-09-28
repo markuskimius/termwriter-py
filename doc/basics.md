@@ -1,8 +1,8 @@
 # screen-py Documentation
 
-[Table of Contents]
+Back to the [Table of Contents]
 
-## The Basics
+## 1. The Basics
 
 At the core of `screen-py` is the `Screen` class.  Think of `Screen` as a box
 within which you can draw more boxes.  It stretches rightward as you add more
@@ -59,6 +59,11 @@ similar functionality as `print()` was borrowed from Javascript.
 For consistency and utility, boxes also provide the `write()` method.  A
 `write(string)` statement followed by a `write('\n')` is equivalent to a single
 `writeln(string)` statement.
+
+
+---
+
+Back to the [Table of Contents]
 
 
 [Table of Contents]: <https://github.com/markuskimius/screen-py/blob/master/doc/README.md>
