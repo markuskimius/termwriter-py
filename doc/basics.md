@@ -1,6 +1,6 @@
 # screen-py Documentation
 
-Back to the [Table of Contents]
+[<-] Back to the [Table of Contents]
 
 ## 1. The Basics
 
@@ -63,8 +63,9 @@ For consistency and utility, boxes also provide the `write()` method.  A
 
 ---
 
-Back to the [Table of Contents]
+[<-] Back to the [Table of Contents]
 
 
+               [<-]: <https://github.com/markuskimius/screen-py/blob/master/doc/README.md>
 [Table of Contents]: <https://github.com/markuskimius/screen-py/blob/master/doc/README.md>
 

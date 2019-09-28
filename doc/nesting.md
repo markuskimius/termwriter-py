@@ -1,6 +1,6 @@
 # screen-py Documentation
 
-Back to the [Table of Contents]
+[<-] Back to the [Table of Contents]
 
 ## 2. Nesting
 
@@ -110,8 +110,9 @@ A few things about the nested `box.draw()`:
 
 ---
 
-Back to the [Table of Contents]
+[<-] Back to the [Table of Contents]
 
 
+               [<-]: <https://github.com/markuskimius/screen-py/blob/master/doc/README.md>
 [Table of Contents]: <https://github.com/markuskimius/screen-py/blob/master/doc/README.md>
 
