@@ -3,7 +3,8 @@
 https://github.com/markuskimius/screen-py
 """
 
-import os, sys
+import os
+import sys
 
 __copyright__ = "Copyright 2019 Mark Kim"
 __license__ = "Apache 2.0"
@@ -13,6 +14,7 @@ __license__ = "Apache 2.0"
 # UTILITIES
 
 class Terminal(object):
+    __DEFAULT_COLS = 120
     __cols = None
 
     @staticmethod
@@ -22,7 +24,7 @@ class Terminal(object):
             try:
                 Terminal.__cols = int(os.popen('tput cols', 'r').read())
             except ValueError:
-                Terminal.__cols = 120
+                Terminal.__cols = Terminal.__DEFAULT_COLS
 
             # Some terminals line wrap if you try to write to the last column
             # so don't use that column
