@@ -58,7 +58,7 @@ This is my second box.
 ... depending on the viewer's terminal width.
 
 
-## Why `writeln()`?
+### Why `writeln()`?
 
 The logical choice for the name of the method to print to a box is `print()` in
 Python 3.6.  Unfortunately `print` is a reserved keyword in Python 2.7 still
