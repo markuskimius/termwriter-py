@@ -18,6 +18,12 @@ viewable by scrolling vertically.
 2. [Nesting]
 
 
+---
+
+License: [Apache 2.0]
+
+
+[Apache 2.0]: <https://github.com/markuskimius/screen-py/blob/master/LICENSE>
 [The Basics]: <https://github.com/markuskimius/screen-py/blob/master/doc/basics.md>
    [Nesting]: <https://github.com/markuskimius/screen-py/blob/master/doc/nesting.md>
 
