@@ -1,6 +1,6 @@
 # screen-py
 
-A library to maximize the use of the screen real estate with print().
+Maximize the screen real estate with print().
 
 
 ## Motivation
