@@ -1,6 +1,6 @@
 # screen-py
 
-maximize text output's screen real estate
+maximize print()'s usage of the screen real estate
 
 
 ## Motivation
