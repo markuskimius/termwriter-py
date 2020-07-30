@@ -1,4 +1,4 @@
-"""A library to maximize the screen real estate.
+"""A library to organize your terminal output.
 
 https://github.com/markuskimius/screen-py
 """

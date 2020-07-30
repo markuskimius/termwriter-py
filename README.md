@@ -1,6 +1,6 @@
 # screen-py
 
-maximize print()'s usage of the screen real estate
+organize your terminal output
 
 
 ## Motivation
