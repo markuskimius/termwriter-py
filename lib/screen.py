@@ -602,8 +602,8 @@ class FlexBox(WritableBox):
 # BOX DECORATORS
 
 class TitledBox(VerticalBox):
-    def __init__(self, title, box, hrule='-'):
-        decorated_title = '%s %s %s' % (hrule, title, hrule)
+    def __init__(self, title, box, hrule='-', hrule_min=2):
+        decorated_title = '%s %s %s' % (hrule * hrule_min, title, hrule * hrule_min)
         self.__title = StringWidget(decorated_title, CenterFormatter(padding_char=hrule))
         self.__content = box
 
