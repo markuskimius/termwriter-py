@@ -659,20 +659,35 @@ class TitledBox(VerticalBox):
 
 class Screen(TitledBox):
     def __init__(self, title, fp=sys.stdout, hrule='='):
-        self.__console = TextBox()   # Create a console area
-        self.__fp = fp               # We'll use this at __exit__
+        self.__top_area = VerticalBox()   # Top area
+        self.__console = None             # Console in the top area
+        self.__fp = fp                    # We'll use this at __exit__
 
         super(Screen, self).__init__(title, FlexBox(), hrule=hrule)  # I am a FlexBox with a title!
-        super(Screen, self).add(self.__console)                      # Add the console to the screen
-        super(Screen, self).hardbreak()                              # Other boxes go below the console
+        super(Screen, self).add(self.__top_area)                     # Add the top area to the screen
+        super(Screen, self).hardbreak()                              # Other boxes go below the top area
+
+    def __get_console(self):
+        if self.__console == None:
+            self.__console = TextBox()
+            self.__top_area.add(self.__console)
+
+        return self.__console
 
     def write(self, *args, **kwargs):
         # Writing to the screen writes to the console area.
-        self.__console.write(*args, **kwargs)
+        self.__get_console().write(*args, **kwargs)
 
     def writeln(self, *args, **kwargs):
         # Writing to the screen writes to the console area.
-        self.__console.writeln(*args, **kwargs)
+        self.__get_console().writeln(*args, **kwargs)
+
+    def writebox(self, BoxType=TextBox, *args, **kwargs):
+        box = BoxType(*args, **kwargs)   # Create the box
+        self.__top_area.add(box)         # Add the box to the top area
+        self.__console = None            # Add any new text to the next console widget
+
+        return box
 
     def add(self, title, box):
         # All boxes added to the Screen get a title
