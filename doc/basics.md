@@ -1,10 +1,10 @@
-# screen-py Documentation
+# termwriter-py Documentation
 
 Back to the [Table of Contents]
 
 ## 1. The Basics
 
-At the core of `screen-py` is the `Screen` class.  Think of `Screen` as a box
+At the core of `termwriter-py` is the `Screen` class.  Think of `Screen` as a box
 within which you can draw more boxes.  It stretches rightward as you add more
 boxes, and downward as it wraps boxes to create new rows.
 
@@ -12,8 +12,8 @@ The most common way to instantiate and draw boxes within Screen is using the
 `with` context:
 
 ```python
-from screen import Screen
-from screen import TextBox
+from termwriter import Screen
+from termwriter import TextBox
 
 with Screen("Screen's Title") as screen:
     with screen.section("My First Box", TextBox()) as box1:
@@ -55,5 +55,5 @@ This is my second box.
 Back to the [Table of Contents]
 
 
-[Table of Contents]: <https://github.com/markuskimius/screen-py/blob/master/doc/README.md>
+[Table of Contents]: <https://github.com/markuskimius/termwriter-py/blob/master/doc/README.md>
 

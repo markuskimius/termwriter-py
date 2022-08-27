@@ -1,11 +1,11 @@
-# screen-py
+# termwriter-py
 
-organize your terminal output
+Organize your terminal output
 
 
 ## Motivation
 
-Dumping a ton of information to the screen using `print()` can cause the data
+Dumping a ton of information to the terminal using `print()` can cause the data
 you want to see on the screen to scroll up, away from the visible terminal
 area.  This can be particularly frustrating because today's monitors have a lot
 more horizontal screen space but the data scrolls away vertically.  What if
@@ -57,7 +57,7 @@ See [documentation].
 [Apache 2.0]
 
 
-[example.py]: <https://github.com/markuskimius/screen-py/blob/master/test/example.py>
-[Apache 2.0]: <https://github.com/markuskimius/screen-py/blob/master/LICENSE>
-[documentation]: <https://github.com/markuskimius/screen-py/blob/master/doc/README.md>
+[example.py]: <https://github.com/markuskimius/termwriter-py/blob/master/test/example.py>
+[Apache 2.0]: <https://github.com/markuskimius/termwriter-py/blob/master/LICENSE>
+[documentation]: <https://github.com/markuskimius/termwriter-py/blob/master/doc/README.md>
 

@@ -3,7 +3,7 @@
 ##############################################################################
 # BOOTSTRAP
 #
-# Include ../lib in the search path so we can find screen when running locally
+# Include ../lib in the search path so we can find termwriter when running locally
 # then call python3 or python, whichever exists.
 # (See https://unix.stackexchange.com/questions/20880)
 #
@@ -31,14 +31,14 @@ __author__ = "Mark Kim"
 
 import sys
 import errno
-from screen import Screen
-from screen import Section
-from screen import FlexBox
-from screen import TextBox
-from screen import Table
-from screen import HRule
-from screen import SoftBreak
-from screen import HardBreak
+from termwriter import Screen
+from termwriter import Section
+from termwriter import FlexBox
+from termwriter import TextBox
+from termwriter import Table
+from termwriter import HRule
+from termwriter import SoftBreak
+from termwriter import HardBreak
 
 
 def main():

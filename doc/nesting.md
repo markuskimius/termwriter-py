@@ -1,4 +1,4 @@
-# screen-py Documentation
+# termwriter-py Documentation
 
 Back to the [Table of Contents]
 
@@ -28,9 +28,9 @@ To nest boxes, use the `section()` method to draw a box with a title, or
 table box under a text box:
 
 ```python
-from screen import Screen
-from screen import TextBox
-from screen import Table
+from termwriter import Screen
+from termwriter import TextBox
+from termwriter import Table
 
 with Screen('My Screen') as screen:
     with screen.section('My First Box', Table('l')) as box:
@@ -63,9 +63,9 @@ Email: nobody@nowhere.com
 In contrast, to lay out the text box next to the tabular box horizontally:
 
 ```python
-from screen import Screen
-from screen import TextBox
-from screen import Table
+from termwriter import Screen
+from termwriter import TextBox
+from termwriter import Table
 
 with Screen('My Screen') as screen:
     with screen.section('My First Box', Table('ll')) as box:
@@ -94,5 +94,5 @@ To the right is a table: Tel:   +1 111 555 3333
 Back to the [Table of Contents]
 
 
-[Table of Contents]: <https://github.com/markuskimius/screen-py/blob/master/doc/README.md>
+[Table of Contents]: <https://github.com/markuskimius/termwriter-py/blob/master/doc/README.md>
 
