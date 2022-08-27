@@ -47,6 +47,13 @@ Email: nobody@nowhere.com
 ```
 
 
+## Installation
+
+```
+pip install termwriter
+```
+
+
 ## Documentation
 
 See [documentation].
