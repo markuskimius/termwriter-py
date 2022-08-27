@@ -17,25 +17,25 @@ more horizontal screen space but the data scrolls away vertically.  What if
 See [example.py] for an example code. Below is its output.
 
 ```
-================================ Example Output ================================
+================================ Example Output =================================
 Some description goes here.
 
-------- My First Box -------- ----------------- My Second Box ------------------
-This is a text box.           This is another text box.
-                              You can have a second line
-                              and it stays in the second box.
+-------- My First Box -------- ----------------- My Second Box ------------------
+This is a text box.            This is another text box.
+                               You can have a second line
+                               and it stays in the second box.
 
---------------- My Third Box --------------- ---------- My Fourth Box ----------
-This box is to the right of the second box.  This box stretches to fit the row
-Unless you have a narrow screen --           because we call softbreak()
+--------------- My Third Box ---------------- ---------- My Fourth Box ----------
+This box is to the right of the second box.   This box stretches to fit the row
+Unless you have a narrow screen --            because we draw SoftBreak()
 then the box wraps to the next row
 
-------- My Fifth Box -------- ----- My Sixth Box ------ ---- My First Table ----
-Notice the rows are jusified. You can also have tables.   # First Name Last Name
-                                                        --- ---------- ---------
-                                                          1 John       Doe
-                                                         10 Jane       Doe
-                                                        100 John       Public
+------- My Fifth Box -------- ------ My Sixth Box ------ ---- My First Table ----
+Notice the rows are jusified. You can also have tables.    # First Name Last Name
+                                                         --- ---------- ---------
+                                                           1 John       Doe
+                                                          10 Jane       Doe
+                                                         100 John       Public
 
 ----- My Eighth Box -----
 You can also nest boxes.

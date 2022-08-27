@@ -15,36 +15,37 @@ directly to arrange boxes flexibly because `Screen` is a root-level box that:
 * Prints the boxes to `stdout` at the end of the `with` context.
 
 The box that arranges box flexibly without these additional root-level features
-is `FlexBox`.  Other useful boxes are:
+is `FlexBox`.  Other box types are:
 
-* `VerticalBox` for stacking boxes vertically.
-* `HorizontalBox` for arranging boxes side-by-side without wrapping.
-* `TabularBox` for aligning text like a table-like format.
+* `Table` for arranging boxes in a matrix.
+* `Section` for displaying a box with a title.
 
 There is also the `TextBox` class meant for writing text.  It is meant to be
 the leaf-level box type complement to the root-level box type `Screen`.
 
-To nest boxes, use the `draw()` method as before, but specify the box type as
-the second argument.  For example, to vertically stack a tabular box under a
-text box:
+To nest boxes, use the `section()` method to draw a box with a title, or
+`draw()` to draw a box without a title.  For example, to vertically stack a
+table box under a text box:
 
 ```python
 from screen import Screen
 from screen import TextBox
-from screen import TabularBox
-from screen import VerticalBox
+from screen import Table
 
 with Screen('My Screen') as screen:
-    with screen.draw('My First Box', VerticalBox) as box:
-        with box.draw(TextBox) as tbox:
-            tbox.writeln('I can nest boxes.')
-            tbox.writeln('Below is a table:')
+    with screen.section('My First Box', Table('l')) as box:
+        with box.draw(TextBox()) as tbox:
+            tbox.write('I can nest boxes.\n')
+            tbox.write('Below is a table:\n')
 
-        with box.draw(TabularBox, 'll') as table:
-            table.writeln('Name:', 'John Q. Public')
-            table.writeln('Tel:', '+1 111 555 3333')
-            table.writeln('Email:', 'nobody@nowhere.com')
+        with box.draw(Table('ll')) as table:
+            table.write('Name:', 'John Q. Public')
+            table.write('Tel:', '+1 111 555 3333')
+            table.write('Email:', 'nobody@nowhere.com')
 ```
+(The number of characters passed to `Table()` specify the number of columns,
+and `l` specifies left-alignment of the table within the cell.)
+
 ... which gives the following output:
 
 ```
@@ -64,19 +65,18 @@ In contrast, to lay out the text box next to the tabular box horizontally:
 ```python
 from screen import Screen
 from screen import TextBox
-from screen import TabularBox
-from screen import HorizontalBox
+from screen import Table
 
 with Screen('My Screen') as screen:
-    with screen.draw('My First Box', HorizontalBox) as box:
-        with box.draw(TextBox) as tbox:
-            tbox.writeln('I can nest boxes.')
-            tbox.writeln('To the right is a table:')
+    with screen.section('My First Box', Table('ll')) as box:
+        with box.draw(TextBox()) as tbox:
+            tbox.write('I can nest boxes.\n')
+            tbox.write('To the right is a table:\n')
 
-        with box.draw(TabularBox, 'll') as table:
-            table.writeln('Name:', 'John Q. Public')
-            table.writeln('Tel:', '+1 111 555 3333')
-            table.writeln('Email:', 'nobody@nowhere.com')
+        with box.draw(Table('ll')) as table:
+            table.write('Name:', 'John Q. Public')
+            table.write('Tel:', '+1 111 555 3333')
+            table.write('Email:', 'nobody@nowhere.com')
 ```
 ... which gives the following output:
 
@@ -88,25 +88,6 @@ I can nest boxes.        Name:  John Q. Public
 To the right is a table: Tel:   +1 111 555 3333   
                          Email: nobody@nowhere.com
 ```
-
-A few things about the nested `box.draw()`:
-
-* Unlike a screen, nested boxes do not have title, so the first argument to
-  `screen.draw()` is the name of the box class rather than the title for the
-  box.
-
-* If no box class is specified as the argument to `draw`, it is assumed to be
-  `TextBox`.  So `box.draw(TextBox)` can be simplified to `box.draw()`.
-
-* `draw()` takes a variable number of arguments which is used to instantiate
-  the box class.  In the above example, `draw()` passes `'ll'` to `TabularBox`
-  to instantiate a tabular box with 2 columns both of which are left-aligned.
-  If you wanted, you could have instead instantiated the `TabularBox` with the
-  `'ll'` argument first then added it to `box` using `add()`.  For example:
-  ```python
-        with box.add(TabularBox('ll')) as table:
-  ```
-
 
 ---
 

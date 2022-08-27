@@ -1,69 +1,92 @@
 #!/bin/sh
 
-# Include ../lib in the search path so we can find screen.py
-# (Thanks to https://unix.stackexchange.com/questions/20880)
+##############################################################################
+# BOOTSTRAP
+#
+# Include ../lib in the search path so we can find screen when running locally
+# then call python3 or python, whichever exists.
+# (See https://unix.stackexchange.com/questions/20880)
+#
 if "true" : '''\'
 then
     export PYTHONPATH="$(dirname $0)/../lib:$PYTHONPATH"
+    pythoncmd=python
 
-    exec python "$0" "$@"
+    if command -v python3 >/dev/null; then
+        pythoncmd=python3
+    fi
+
+    exec "$pythoncmd" "$0" "$@"
     exit 127
 fi
 '''
 
+##############################################################################
+# PYTHON CODE BEGINS HERE
+
+__copyright__ = "Copyright 2019-2022 Mark Kim"
+__license__ = "Apache 2.0"
+__version__ = "1.0.0"
+__author__ = "Mark Kim"
+
 import sys
+import errno
 from screen import Screen
+from screen import Section
+from screen import FlexBox
 from screen import TextBox
-from screen import TabularBox
+from screen import Table
+from screen import HRule
+from screen import SoftBreak
+from screen import HardBreak
 
 
 def main():
     with Screen('Example Output') as screen:
-        screen.writeln('Some description goes here.')
+        screen.write('Some description goes here.')
 
-        with screen.draw('My First Box', TextBox) as box:
-            box.writeln('This is a text box.')
+        with screen.section('My First Box', TextBox()) as box:
+            box.write('This is a text box.')
 
-        with screen.draw('My Second Box', TextBox) as box:
-            box.writeln('This is another text box.')
-            box.writeln('You can have a second line')
-            box.writeln('and it stays in the second box.')
+        with screen.section('My Second Box', TextBox()) as box:
+            box.write('This is another text box.\n')
+            box.write('You can have a second line\n')
+            box.write('and it stays in the second box.')
 
-        with screen.draw('My Third Box', TextBox) as box:
-            box.writeln('This box is to the right of the second box.')
-            box.writeln('Unless you have a narrow screen --')
-            box.writeln('then the box wraps to the next row')
+        with screen.section('My Third Box', TextBox()) as box:
+            box.write('This box is to the right of the second box.\n')
+            box.write('Unless you have a narrow screen --\n')
+            box.write('then the box wraps to the next row')
 
-        with screen.draw('My Fourth Box', TextBox) as box:
-            box.writeln('This box stretches to fit the row')
-            box.writeln('because we call softbreak()')
+        with screen.section('My Fourth Box', TextBox()) as box:
+            box.write('This box stretches to fit the row\n')
+            box.write('because we draw SoftBreak()')
 
         # Soft break causes the current row to full justify and cause the last
         # box to flush right.
-        screen.softbreak()
+        screen.draw(SoftBreak())
 
-        with screen.draw('My Fifth Box', TextBox) as box:
-            box.writeln('Notice the rows are jusified.')
+        with screen.section('My Fifth Box', TextBox()) as box:
+            box.write('Notice the rows are jusified.')
 
-        with screen.draw('My Sixth Box', TextBox) as box:
-            box.writeln('You can also have tables.')
+        with screen.section('My Sixth Box', TextBox()) as box:
+            box.write('You can also have tables.')
 
-        with screen.draw('My First Table', TabularBox, 'rll') as table:
-            table.writeln('#', 'First Name', 'Last Name')
-            table.hrule()
-            table.writeln(1, 'John', 'Doe')
-            table.writeln(10, 'Jane', 'Doe')
-            table.writeln(100, 'John', 'Public')
+        with screen.section('My First Table', Table('rll')) as table:
+            table.write('#', 'First Name', 'Last Name')
+            table.draw(HRule())
+            table.write(1, 'John', 'Doe')
+            table.write(10, 'Jane', 'Doe')
+            table.write(100, 'John', 'Public')
 
-        with screen.draw('My Eighth Box', TextBox) as box:
-            box.writeln('You can also nest boxes.')
-            box.writeln('Below is a table box.')
-            box.writeln()
+        with screen.section('My Eighth Box', TextBox()) as box:
+            box.write('You can also nest boxes.\n')
+            box.write('Below is a table box.\n')
 
-            with box.draw(TabularBox, 'll') as table:
-                table.writeln('Name:', 'John Q. Public')
-                table.writeln('Tel:', '+1 111 555 3333')
-                table.writeln('Email:', 'nobody@nowhere.com')
+            with box.draw(Table('ll')) as table:
+                table.write('Name:', 'John Q. Public')
+                table.write('Tel:', '+1 111 555 3333')
+                table.write('Email:', 'nobody@nowhere.com')
 
 
 if __name__ == "__main__":
@@ -73,3 +96,5 @@ if __name__ == "__main__":
         print("")
         sys.exit(errno.EOWNERDEAD)
 
+
+# vim:filetype=python:

@@ -13,15 +13,17 @@ The most common way to instantiate and draw boxes within Screen is using the
 
 ```python
 from screen import Screen
+from screen import TextBox
 
 with Screen("Screen's Title") as screen:
-    with screen.draw("My First Box") as box1:
-        box1.writeln("Hello, world!")
-        box1.writeln("This is my first box.")
+    with screen.section("My First Box", TextBox()) as box1:
+        box1.write("Hello, world!")
+        box1.write("This is my first box.")
 
-    with screen.draw("My Second Box") as box2:
-        box2.writeln("Hello again!")
-        box2.writeln("This is my second box.")
+    with screen.section("My Second Box", TextBox()) as box2:
+        box2.write("Hello again!")
+        box2.write("This is my second box.")
+
 ```
 ... which outputs either:
 
@@ -46,19 +48,6 @@ Hello again!
 This is my second box.
 ```
 ... depending on the viewer's terminal width.
-
-
-### Why `writeln()`?
-
-The logical choice for the name of the method to print to a box is `print()` in
-Python 3.6.  Unfortunately `print` is a reserved keyword in Python 2.7 still
-popular as of this writing and cannot be used as the name of a method.  In
-order to retain backward compatibility with 2.7, the name of the method of a
-similar functionality as `print()` was borrowed from Javascript.
-
-For consistency and utility, boxes also provide the `write()` method.  A
-`write(string)` statement followed by a `write('\n')` is equivalent to a single
-`writeln(string)` statement.
 
 
 ---
